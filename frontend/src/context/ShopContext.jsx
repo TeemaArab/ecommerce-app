@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import {products} from '../assets/assets'
 
 export const shopContext = createContext();
@@ -9,6 +9,29 @@ const shopContextProvider =(props)=>{
     const dellivery_fee = 10;
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
+    const [cardItems, setCardItems] = useState({});
+
+    
+    const addToCart = async(itemId, size) =>{
+        let cartData = structuredClone(cardItems);
+
+        if(cartData[itemId]){
+            if(cartData[itemId][size] ){
+                cartData[itemId][size] += 1;
+            }else{
+                cartData[itemId][size] = 1;
+            }
+        }else{
+            cartData[itemId] = {};
+            cartData[itemId][size] = 1;
+        }
+
+       setCardItems(cartData);
+    }
+
+    useEffect(()=>{
+       console.log(cardItems);
+    },[cardItems])
 
 
     const value ={
@@ -18,7 +41,9 @@ const shopContextProvider =(props)=>{
         search,
         setSearch,
         showSearch,
-        setShowSearch
+        setShowSearch,
+        cardItems,
+        addToCart
 
     }
     return (
