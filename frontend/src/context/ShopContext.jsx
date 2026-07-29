@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import {products} from '../assets/assets'
+import { toast } from "react-toastify";
 
 export const shopContext = createContext();
 
@@ -9,11 +10,17 @@ const shopContextProvider =(props)=>{
     const dellivery_fee = 10;
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
-    const [cardItems, setCardItems] = useState({});
+    const [cartItems, setCartItems] = useState({});
 
     
     const addToCart = async(itemId, size) =>{
-        let cartData = structuredClone(cardItems);
+      
+        if(!size){
+           toast.error('Please select a size');
+           return;
+      }
+
+        let cartData = structuredClone(cartItems);
 
         if(cartData[itemId]){
             if(cartData[itemId][size] ){
@@ -26,12 +33,29 @@ const shopContextProvider =(props)=>{
             cartData[itemId][size] = 1;
         }
 
-       setCardItems(cartData);
+       setCartItems(cartData);
+    }
+
+    // To get cart count
+    const getCartCount = () => {
+        let TotalCount = 0;
+        for(const items in cartItems){
+            for(  let item in cartItems[items]){
+                try{
+                    if(cartItems[items][item] > 0 ){
+                        TotalCount += cartItems[items][item];
+                    }
+                }catch(error){
+                  
+                }
+            }
+        }
+        return TotalCount;
     }
 
     useEffect(()=>{
-       console.log(cardItems);
-    },[cardItems])
+       console.log(cartItems);
+    },[cartItems])
 
 
     const value ={
@@ -42,8 +66,9 @@ const shopContextProvider =(props)=>{
         setSearch,
         showSearch,
         setShowSearch,
-        cardItems,
-        addToCart
+        cartItems,
+        addToCart,
+        getCartCount
 
     }
     return (
