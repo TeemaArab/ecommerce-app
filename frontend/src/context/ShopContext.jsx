@@ -53,8 +53,18 @@ const shopContextProvider =(props)=>{
         return TotalCount;
     }
 
+//    to update the cart page by making the delete and quantity change work, we need to update the cartItems state in the context provider.
+     const updateQuantity = async(itemId, size, quantity)=>{
+         let cartData = structuredClone(cartItems);
+         cartData[itemId][size] = quantity;
+         setCartItems(cartData);
+     }
+
+
+
+
     useEffect(()=>{
-       console.log(cartItems);
+       
     },[cartItems])
 
 
@@ -68,7 +78,8 @@ const shopContextProvider =(props)=>{
         setShowSearch,
         cartItems,
         addToCart,
-        getCartCount
+        getCartCount,
+        updateQuantity
 
     }
     return (
