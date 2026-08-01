@@ -13,13 +13,13 @@ const Cart = () => {
  useEffect(()=>{
       
    const tempData = [];
-   for(const items in cartItems){
-       for(const item in cartItems[items]){
-           if(cartItems[items][item] > 0){
+   for(const itemId in cartItems){
+       for(const size in cartItems[itemId]){
+           if(cartItems[itemId][size] > 0){
                tempData.push({
-                  _id: items,
-                  size: item,
-                  quantity: cartItems[items][item]
+                  _id: itemId,
+                  size: size,
+                  quantity: cartItems[itemId][size]
                })
            }
        }

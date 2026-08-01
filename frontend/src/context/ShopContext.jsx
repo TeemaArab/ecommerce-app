@@ -39,11 +39,11 @@ const shopContextProvider =(props)=>{
     // To get cart count
     const getCartCount = () => {
         let TotalCount = 0;
-        for(const items in cartItems){
-            for(  let item in cartItems[items]){
+        for(const itemId in cartItems){
+            for(  let size in cartItems[itemId]){
                 try{
-                    if(cartItems[items][item] > 0 ){
-                        TotalCount += cartItems[items][item];
+                    if(cartItems[itemId][size] > 0 ){
+                        TotalCount += cartItems[itemId][size];
                     }
                 }catch(error){
                   
