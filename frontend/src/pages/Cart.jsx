@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from 'react'
 import { shopContext } from '../context/ShopContext'
 import Title from '../components/Title';
 import { assets } from '../assets/assets.js';
+import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
 
@@ -49,12 +50,19 @@ const Cart = () => {
                       </div>
                     </div>
                   </div>
-                  <input className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1'  type='number' min={1} placeholder='Quantity' defaultValue={item.quantity} />
+                  <input onChange={(e)=> e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.size, Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1'  type='number' min={1} placeholder='Quantity' defaultValue={item.quantity} />
                   <img  onClick={()=>updateQuantity(item._id, item.size, 0)} src={assets.bin_icon} alt='Delete' className='w-4 mr-4 sm:w-5 cursor-pointer'/>
               </div>
              )
           })
         }
+       </div>
+
+       <div className='flex justify-end my-20'>
+         <div className='w-full sm:w-[450px]'>
+          <CartTotal />
+           
+         </div>
        </div>
     </div>
   )

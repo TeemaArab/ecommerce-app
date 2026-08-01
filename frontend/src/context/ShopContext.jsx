@@ -7,7 +7,7 @@ export const shopContext = createContext();
 const shopContextProvider =(props)=>{
       
     const currency = '$';
-    const dellivery_fee = 10;
+    const delivery_fee = 10;
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
@@ -60,6 +60,25 @@ const shopContextProvider =(props)=>{
          setCartItems(cartData);
      }
 
+     //get cart amount
+
+     const getCartAmount = ()=>{
+        let totalAmount = 0;
+        for (const itemId in cartItems){
+            let itemInfo = products.find((product)=> product._id === itemId);
+            for(const size in cartItems[itemId]){
+                try{
+                  if(cartItems[itemId][size] > 0){
+                    totalAmount += cartItems[itemId][size] * itemInfo.price;
+                  }
+                }catch(error){
+
+                }
+            }
+        }
+        return totalAmount;
+     }
+
 
 
 
@@ -71,7 +90,7 @@ const shopContextProvider =(props)=>{
     const value ={
         products,
         currency,
-        dellivery_fee,
+        delivery_fee,
         search,
         setSearch,
         showSearch,
@@ -79,7 +98,8 @@ const shopContextProvider =(props)=>{
         cartItems,
         addToCart,
         getCartCount,
-        updateQuantity
+        updateQuantity,
+        getCartAmount
 
     }
     return (
