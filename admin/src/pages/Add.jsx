@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {assets} from '../assets/assets.js'
 import axios from 'axios';
 import { backendURL } from '../App';
+import { toast } from 'react-toastify';
 
 const Add = ({token}) => {
 
@@ -41,9 +42,22 @@ const Add = ({token}) => {
         headers:{token}
         
       });
-      console.log(response.data);
+      // to clear the form after successful submission and show success message
+      if(response.data.success){
+        toast.success(response.data.message);
+        setName("");
+        setDescription("");
+        setPrice("");
+        setImage1(false);
+        setImage2(false);
+        setImage3(false);
+        setImage4(false);
+      }else{
+        toast.error(response.data.message);
+      }
     }catch(error){
       console.log(error);
+      toast.error(error.message);
     }
   }
 
