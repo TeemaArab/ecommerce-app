@@ -4,7 +4,7 @@ import { shopContext } from '../context/ShopContext'
 import ProductItem from './ProductItem'
 import Title from './Title'
 
-const RelatedProducts = ({category, subCategory}) => {
+const RelatedProducts = ({category, subCategory,productId}) => {
 
     const {products} = useContext(shopContext);
     const [related,setRelated] = useState([]);
@@ -14,6 +14,7 @@ const RelatedProducts = ({category, subCategory}) => {
             let productsCopy = products.slice(); // create one copy of all products
             productsCopy = productsCopy.filter((item) => category === item.category);
             productsCopy = productsCopy.filter((item) => subCategory === item.subCategory);
+            productsCopy = productsCopy.filter((item) => item._id !== productId);
 
             setRelated(productsCopy.slice(0,5));
         }
