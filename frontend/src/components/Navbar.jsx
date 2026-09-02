@@ -7,8 +7,16 @@ import { shopContext } from '../context/ShopContext'
 const Navbar = () => {
 
     const[visible, setVisible] = useState(false);
-    const {setShowSearch, getCartCount} = useContext(shopContext);
+    const {setShowSearch, getCartCount, navigate, token, setToken, setCartItems} = useContext(shopContext);
+    
 
+    const logout =()=>{ // to logout the user
+       navigate('/login'); // redirect the user to login page
+      localStorage.removeItem('token'); // remove token from localStorage
+      setToken(''); // make the set token empty so that the user is logged out
+      setCartItems({}); // make the cart items empty so that the user is logged out
+     
+    }
 
   return (
     <div className='flex items-center justify-between py-5 font-medium'>
@@ -42,14 +50,17 @@ const Navbar = () => {
              <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className='w-5 cursor-pointer' alt="" />
 
              <div className='group relative'>
-                <Link to='/login'><img src={assets.profile_icon} className='w-5 cursor-pointer' alt="" /></Link>
+                <img onClick={()=> token ? null : navigate('/login')}src={assets.profile_icon} className='w-5 cursor-pointer' alt="" />
+                  
+                  {/* Dropdown Menu */}
+                  { token && 
                    <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4'>
                         <div className='flex flex-col gap-2  w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
                            <p className='cursor-pointer hover:text-black'>My Profile</p>
                            <p className='cursor-pointer hover:text-black'>Orders</p>
-                           <p className='cursor-pointer hover:text-black'>Logout</p>
+                           <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
                         </div>
-                    </div>
+                    </div>}
              </div>
              <Link to='/cart' className='relative'>
                 <img src={assets.cart_icon} className='w-5 min-w-5 ' alt="" />
