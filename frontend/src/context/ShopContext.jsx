@@ -40,6 +40,20 @@ const shopContextProvider =(props)=>{
         }
 
        setCartItems(cartData);
+
+       // if user is logged in, then we will send the cart data to the backend to save it in the database
+       if(token){
+        try{
+            await axios.post(backendUrl+'/api/cart/add', { itemId, size}, {
+                headers: {
+                    token: token
+                }
+            });
+        }catch(error){
+            console.log(error);
+            toast.error(error.message);
+        }
+       }
     }
 
     // To get cart count
@@ -64,6 +78,20 @@ const shopContextProvider =(props)=>{
          let cartData = structuredClone(cartItems);
          cartData[itemId][size] = quantity;
          setCartItems(cartData);
+
+         // if user is logged in, then we will send the data to the backend to update the cart data in the database
+          if(token){
+            try{
+                await axios.post(backendUrl+'/api/cart/update', {itemId, size, quantity}, {
+                    headers: {
+                        token: token
+                    }
+                });
+            }catch(error){
+                console.log(error);
+                toast.error(error.message);
+            }
+          }
      }
 
      //get cart amount
@@ -103,6 +131,21 @@ const shopContextProvider =(props)=>{
         }
     }
 
+    // to get the cart data saved in database(mongoDB) and show it on the cart page basket symbol
+    const getUserCart = async(token) =>{  // check the identity of the user by token
+        try{
+              const response = await axios.post(backendUrl+'/api/cart/get',{},{  // keep the token in the headers to verify the user identity
+                headers:{token: token}
+              })  
+              if(response.data.success){ // if the response was true
+                setCartItems(response.data.cartData); // set the cart data in the state
+              }   
+        }catch(error){
+            console.log(error);
+            toast.error(error.message);
+        }
+    }
+
 
     useEffect(()=>{
         getProductsData();
@@ -111,6 +154,7 @@ const shopContextProvider =(props)=>{
     useEffect(()=>{
         if(!token && localStorage.getItem('token')){
             setToken(localStorage.getItem('token'));
+            getUserCart(localStorage.getItem('token'));
         }
     },[])
 
