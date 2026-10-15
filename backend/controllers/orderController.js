@@ -48,12 +48,28 @@ const placeOrderStripe = async(req,res) =>{
 
 //display all orders on admin panel
 const allOrders = async(req,res) =>{
+  try{
 
+   const orders = await orderModel.find({});
+   res.json({success:true, orders});
+
+  }catch(error){
+    console.error("Error fetching all orders:", error);
+    res.json({success:false, message:error.message});
+  }
 }
 
 
 //display all orders of a particular user
 const userOrders = async(req,res) =>{
+    try{
+       const {userId} = req.body;
+       const orders = await orderModel.find({userId});
+       res.json({success:true, orders});
+    }catch(error){
+       console.error("Error fetching user orders:", error);
+       res.json({success:false, message:error.message});
+    }
 
 }
 

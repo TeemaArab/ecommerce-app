@@ -18,6 +18,6 @@ orderRouter.post('/stripe',authUser, placeOrderStripe); // for stripe payment
 
 
 //user features
-orderRouter.post('/userOrder',authUser, userOrders);
+orderRouter.post('/userOrders',authUser, userOrders);
 
 export default orderRouter;

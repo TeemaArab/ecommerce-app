@@ -49,6 +49,8 @@ const onSubmitHandler = async(event) => {
    items:orderItems,
    amount: getCartAmount() + delivery_fee,
   }
+
+   // api call for COD
    
   switch(method){
    case 'cod':
@@ -67,11 +69,12 @@ const onSubmitHandler = async(event) => {
    default:
       break;
   }
-  // api call for COD
+ 
 
 
    }catch(error){
   console.log("PLACE ORDER ERROR:", error);
+  toast.error(error.message);
    }
 }
 
